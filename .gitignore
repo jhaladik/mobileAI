@@ -1,0 +1,17 @@
+# Logs and data
+*.log
+.*.log
+street_log.txt
+data/
+logs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Models (too large for git)
+models/
+
+# Config with secrets
+.cloudflared/
