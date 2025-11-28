@@ -235,13 +235,14 @@ class YOLOv8Detector:
 
         return keep
 
-    def detect(self, image, filter_classes=None):
+    def detect(self, image, filter_classes=None, auto_rotate=False):
         """
         Run detection on an image
 
         Args:
             image: BGR image (numpy array) or path to image
             filter_classes: Set of class names to keep (default: TRAFFIC_CLASSES)
+            auto_rotate: Auto-rotate portrait images to landscape
 
         Returns:
             List of detections: [(class_name, confidence, x1, y1, x2, y2), ...]
@@ -254,6 +255,11 @@ class YOLOv8Detector:
             image = cv2.imread(str(image))
             if image is None:
                 return []
+
+        # Auto-rotate if image is portrait (taller than wide)
+        # Use counter-clockwise to match phone orientation
+        if auto_rotate and image.shape[0] > image.shape[1]:
+            image = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
         if filter_classes is None:
             filter_classes = TRAFFIC_CLASSES
