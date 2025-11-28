@@ -54,8 +54,8 @@ class YOLOv8Detector:
         if not self.model_path.exists():
             raise FileNotFoundError(f"Model not found: {self.model_path}")
 
-        # Use NNAPI for Android hardware acceleration, fallback to CPU
-        providers = ['NnapiExecutionProvider', 'XnnpackExecutionProvider', 'CPUExecutionProvider']
+        # Use XNNPACK for ARM optimization, skip NNAPI (compatibility issues with some models)
+        providers = ['XnnpackExecutionProvider', 'CPUExecutionProvider']
 
         sess_options = ort.SessionOptions()
         sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
